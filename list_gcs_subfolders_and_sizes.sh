@@ -1,9 +1,9 @@
 #!/bin/bash
 
-bucket=broad-dsp-monster-hca-prod-ebi-storage
+bucket=broad-dsp-monster-hca-prod-ucsc-storage
 current_date=$(date +%Y%m%d)
-temp_file="${bucket}_list_${current_date}_temp.csv"
-final_file="${bucket}_list_${current_date}.csv"
+temp_file="${bucket}_sizes_${current_date}_temp.csv"
+final_file="${bucket}_sizes_${current_date}.csv"
 
 for folder in $(gcloud storage ls gs://${bucket}); do
  for subfolder in $(gcloud storage ls "$folder"); do
@@ -13,7 +13,7 @@ for folder in $(gcloud storage ls gs://${bucket}); do
 done >> "${bucket}_list_${current_date}_temp.csv"
 
 #remove duplicate rows & object listing
-sort -u sort -u "$temp_file" | grep -v '/:,' > "$final_file"
+sort -u "$temp_file" | grep -v '/:,' > "$final_file"
 
 rm "$temp_file"
 
